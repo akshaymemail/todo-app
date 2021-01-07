@@ -45,6 +45,7 @@ html {
 }
 #menubar{
   display: none;
+  cursor: pointer;
 }
 
 
