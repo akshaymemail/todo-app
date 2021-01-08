@@ -18,6 +18,8 @@ html {
   align-items: center;
   padding: 1em;
   color: #f1f1f1;
+  position: sticky;
+  top: 0;
 }
 
 .menu, #menubar, .brand, .contact{
