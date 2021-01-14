@@ -1,5 +1,6 @@
 const express = require("express")
 const bodyParser = require("body-parser")
+const mongoose = require("mongoose")
 const date = require(__dirname + "/date.js")
 const port = 3000
 
@@ -11,16 +12,55 @@ app.use(bodyParser.urlencoded({
 }))
 
 app.use(express.static("public"))
+mongoose.connect("mongodb://localhost:27017/todolistDB", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
 
-let items = ["Buy food", "Make food", "Eat food"]
+const todoListSchema = new mongoose.Schema({
+    name: String
+})
+
+const Items = mongoose.model("Item", todoListSchema)
+
+const buyFood = new Items({
+    name: "Buy Food"
+})
+const eatFood = new Items({
+    name: "Eat Food"
+})
+const payMoney = new Items({
+    name: "Pay Money"
+})
+
 let workItems = []
 
 app.get("/", function (req, res) {
     let time = date.getExternalDate()
-    res.render("home", {
-        listTitle: time,
-        newListItem: items
+
+    Items.find({}, function (err, items) {
+        if (err) {
+            console.log(err)
+        } else {
+            if (items.length === 0) {
+                Items.insertMany([buyFood, eatFood, payMoney], function (err){
+                    if (err){
+                        console.log(err)
+                    }else{
+                        console.log("Item added successfully")
+                        res.redirect("/")
+                    }
+                })
+            }
+
+            res.render("home", {
+                listTitle: time,
+                newListItem: items
+            })
+        }
     })
+
+    
 })
 
 app.get("/about", function (req, res) {
@@ -32,7 +72,9 @@ app.post("/", function (req, res) {
         workItems.push(req.body.newItem)
         res.redirect('/work')
     } else {
-        items.push(req.body.newItem)
+        new Items({
+            name: req.body.newItem
+        }).save()
         res.redirect('/')
     }
 
@@ -45,6 +87,16 @@ app.get("/work", function (req, res) {
     })
 })
 
-app.listen( process.env.PORT || port, function () {
+app.post("/delete", function (req, res) {
+    Items.findByIdAndRemove(req.body.itemId,function(err){
+        if(!err) {
+            console.log("deleted")
+        }
+    })
+    res.redirect("/")
+    //  console.log(req.body.itemId)
+})
+
+app.listen(process.env.PORT || port, function () {
     console.log("Server is running on port : " + port);
 })
