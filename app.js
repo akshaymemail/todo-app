@@ -24,13 +24,13 @@ const todoListSchema = new mongoose.Schema({
 const Items = mongoose.model("Item", todoListSchema)
 
 const buyFood = new Items({
-    name: "Buy Food"
+    name: "Welcome to my todo web app"
 })
 const eatFood = new Items({
-    name: "Eat Food"
+    name: "Use + to add new items"
 })
 const payMoney = new Items({
-    name: "Pay Money"
+    name: "Check the checkbox to delete item"
 })
 
 let workItems = []
@@ -47,8 +47,8 @@ app.get("/", function (req, res) {
                     if (err){
                         console.log(err)
                     }else{
-                        console.log("Item added successfully")
-                        res.redirect("/")
+                        console.log("Item added successfully to the database")
+                        //res.redirect("/")
                     }
                 })
             }

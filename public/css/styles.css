@@ -168,7 +168,7 @@ p {
   font-family: 'Montserrat', sans-serif;
 }
 
-form {
+form.list {
   text-align: center;
   margin-left: 20px;
 }
