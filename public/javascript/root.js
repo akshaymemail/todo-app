@@ -1,14 +1,11 @@
-document.getElementById('menubar').addEventListener('click',function(){
-    document.getElementById('sidebar').classList.toggle('opensidebar');
+$('#menubar').click(()=>{
+    $('#sidebar').addClass('opensidebar')
 })
 
-document.getElementsByClassName('closeBtnSide')[0].addEventListener('click',function(){
-    document.getElementById('sidebar').classList.remove('opensidebar');
+$('.container, .closeBtnSide').click(()=>{
+    $('#sidebar').removeClass('opensidebar')
 })
 
-document.getElementsByClassName('box')[0].addEventListener('click',function(){
-    document.getElementById('sidebar').classList.remove('opensidebar')
-})
 
 document.getElementsByTagName('button')[0].addEventListener("click",function(){
     new Audio('click.mp3').play()
@@ -16,4 +13,20 @@ document.getElementsByTagName('button')[0].addEventListener("click",function(){
     setTimeout(() => {
         document.getElementsByTagName('button')[0].classList.remove('pressed')
     }, 200);
+})
+
+// profiles
+
+$('#profile').click(() => {
+    $('#profile-card').toggle("active")
+})
+
+$('.container').click(() => {
+    $('#profile-card').css('display', 'none')
+})
+
+// ------------------Modals----------------
+
+$('#floating, #close, #close-modal').click(() => {
+    $('.modal').toggle('active')
 })

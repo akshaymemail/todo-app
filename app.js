@@ -1,166 +1,74 @@
-const express = require("express")
-const bodyParser = require("body-parser")
-const mongoose = require("mongoose")
-const _ = require("lodash")
-const date = require(__dirname + "/date.js")
-const port = 3000
+require('dotenv').config()
+const express = require('express')
+const bodyParser = require('body-parser')
+const ejs = require('ejs')
+const session = require('express-session')
+const passport = require('passport')
 
-const app = express();
-app.set("view engine", "ejs")
+const User = require('./config/db')
+
+const ITEMS = require('./lib/items')
+
+const app = express()
+const PORT = process.env.PORT || 3000
 
 app.use(bodyParser.urlencoded({
     extended: true
 }))
+app.use(express.static('public'))
+app.set('view engine', 'ejs')
 
-app.use(express.static("public"))
-mongoose.connect("your application database connection", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-
-const homeListSchema = {
-    name: String
-}
-
-anonoymousSchema = {
-    listName: {
-        type: String
-    },
-    listItems: {
-        type: [homeListSchema]
+//session
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 7 * 24 * 3600000 // 1 day 
     }
+}))
 
-}
+//initialization
+app.use(passport.initialize())
+app.use(passport.session())
 
-const Items = mongoose.model("Item", homeListSchema)
+// routes
+const login = require('./routes/login')
+app.use('/', login)
+app.use('/', require('./routes/register'))
+app.use('/', require('./routes/logout'))
+app.use('/', require('./routes/add'))
+app.use('/', require('./routes/delete'))
+app.use('/', require('./routes/createList'))
+app.use('/', require('./routes/lists'))
 
-const anonoymousList = mongoose.model("anonoymousList", anonoymousSchema)
-
-const buyFood = new Items({
-    name: "Welcome to my todo web app"
-})
-
-const eatFood = new Items({
-    name: "Use + to add new items"
-})
-
-const payMoney = new Items({
-    name: "Check the checkbox to delete item"
-})
-
-const home = date.getExternalDate()
-app.get("/", function (req, res) {
-    Items.find({}, function (err, items) {
-        if (err) {
-            console.log(err)
-        } else {
-            if (items.length === 0) {
-                Items.insertMany([
-                        buyFood,
-                        eatFood,
-                        payMoney
-                    ],
-                    function (err) {
-                        if (err) {
-                            console.log(err)
-                        }
-                    })
-            }
-
-            res.render("home", {
-                listTitle: home,
-                newListItem: items
+app.get('/', (req, res) => {
+    if (req.isAuthenticated()) {
+        User.findOne({_id : login.user._id}, (err, user) => {
+            res.render('home', {
+                profile: user.firstName,
+                isLogin: true,
+                user : user,
+                items : ITEMS
             })
-        }
-    })
-})
-
-app.get("/:anonoymousRoute", function (req, res) {
-    const anonoymousRoute = _.capitalize(req.params.anonoymousRoute)
-    anonoymousList.findOne({
-        listName: anonoymousRoute
-    }, function (err, result) {
-        if (!err) {
-            if (!result) {
-                // add the items in the list
-                new anonoymousList({
-                    listName: anonoymousRoute,
-                    listItems: [buyFood, eatFood, payMoney]
-                }).save()
-                res.redirect("/" + anonoymousRoute)
-            } else {
-                // rednder the items from the list
-                res.render("home", {
-                    listTitle: result.listName,
-                    newListItem: result.listItems
-                })
-            }
-
-        }
-    })
-
-})
-
-app.get("/about", function (req, res) {
-    res.render("about")
-})
-
-app.post("/", function (req, res) {
-    if (req.body.list === home) {
-        // insert new item in homepage collection db
-        new Items({
-            name: req.body.newItem
-        }).save()
-        res.redirect('/')
+        })
+        
     } else {
-        // insert new item in anonoymous collection db
-        anonoymousList.findOne({
-            listName: req.body.list
-        }, function (err, result) {
-            if (!err) {
-                result.listItems.push({
-                    name: req.body.newItem
-                })
-                result.save() 
-            }
-            res.redirect("/" + req.body.list)
+        res.render('home', {
+            profile: 'Login',
+            isLogin: false,
+            items: ITEMS
         })
 
+        if (ITEMS.length === 0) {
+            ITEMS.push('Hi guest !')
+            ITEMS.push('use + buttton to add new item')
+            ITEMS.push('check the checkbox to delete item')
+        }
     }
 
 })
 
-app.post("/delete", function (req, res) {
-
-    if (req.body.listName === home) {
-        // delete items from home collection database
-        Items.findByIdAndRemove(
-            req.body.itemId,
-            function (err) {
-                if (err) {
-                    console.log(err)
-                }
-            })
-        res.redirect("/")
-    } else {
-        // delete items from anonoymousList collection database
-        anonoymousList.findOneAndUpdate({
-            listName: req.body.listName
-        }, {
-            $pull: {
-                listItems: {
-                    _id: req.body.itemId
-                }
-            }
-        }, function (err, result) {
-            if (!err) {
-                res.redirect("/" + req.body.listName)
-            }
-        })
-
-    }
-})
-
-app.listen(process.env.PORT || port, function () {
-    console.log("Server is running on port : " + port);
+app.listen(PORT, () => {
+    console.log('listening on port : 3000');
 })

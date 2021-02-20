@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#A683E3">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://kit.fontawesome.com/05a1109ff0.js" crossorigin="anonymous"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Architects+Daughter&display=swap"
+      rel="stylesheet"/>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <%- include('partials/navbar') %> 
+    <%- include('partials/sidebar') %> 
+    <div class="container">
+        <h1> <%= heading %> </h1>
+
+      <form action='/<%= button %> ' method="post">
+        <img src="images/key.jpg" alt="key">
+        <% if(isRegister){ %>
+            <input type='text' name = "fname" placeholder = "First Name" required/>
+            <input type='text' name = "lname" placeholder = "Last Name" required/>
+       <% } %> 
+        <input type='email' name = "username" placeholder = "Username" required/>
+        <input type='password' name = "password" placeholder = "Password" required/>
+        <% if (isRegister) { %>
+         <div class = 'gender'>
+            <input type="radio" name="gender" value="male"> <span>Male</span> 
+         </div>
+         <div class = 'gender'>
+            <input type="radio" name="gender" value="female"> <span>Female</span> 
+         </div >
+        <% } %>
+        <button type = 'submit'> <%= button %>  </button>
+        <% if(!isRegister){ %>
+            <div class="register">
+                <span>Don't have account yet ?</span> <a href="/register">Register</a>
+            </div>
+        <%  }else{ %>
+            <div class="register">
+                <span>Already registered ? </span> <a href="/login">Login </a>
+            </div>
+        <%  } %> 
+      </form>
+    </div>
+    <script src="javascript/root.js"></script>
+</body>
+
+</html>

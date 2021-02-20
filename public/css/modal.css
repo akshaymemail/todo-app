@@ -1,0 +1,65 @@
+.modal{
+    position: relative;
+    max-width: 400px;
+    min-height: 200px;
+    background : #E4E9FD;
+    box-shadow: 0px 2px 10px rgb(0 0 0 / 20%);
+    padding : 1em;
+    margin: 1em auto;
+    border-radius: 5px;
+    display: none;
+}
+.active{
+    display:block
+}
+
+.modal .modal-title{
+    display:flex;
+    justify-content: space-between;
+    justify-items: baseline;
+}
+
+.modal h3{
+    color:#424242;
+    font-family: 'Montserrat', sans-serif;
+    margin: .5em;
+}
+
+.modal input {
+    font-family: "Architects Daughter", cursive;
+    padding:8px;
+    outline:none;
+    border:none;
+    border-bottom: 2px dashed #A683E3;
+    margin: 2em auto;
+    text-align: center;
+    background:transparent;
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.modal button{
+    float:right;
+    margin:1em .8em;
+    border:none;
+    outline:none;
+    padding: 8px 25px;
+    color: #f2f2f2;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 5px;
+}
+
+.modal #close-modal{
+    background: #6c757d
+}
+
+.modal .submit{
+    background : #A683E3
+}
+
+.modal hr{
+    height : .5px;
+    background-color: #A683E3!important
+}
+
+@media(max-width:)

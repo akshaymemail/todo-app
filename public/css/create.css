@@ -1,0 +1,25 @@
+.create{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: auto 10% 10% auto;
+}
+
+.floating-btn{
+    background:transparent;
+    outline:none;
+    border: none;
+}
+
+.floating-btn i{
+    font-size: 2em;
+    padding: .7em;
+    background-color: #A683E3;
+    border-radius: 50%;
+    color: #f1f1f1;
+    box-shadow: 0px 2px 10px rgb(0 0 0 / 20%);
+}
+
+.floating-btn i:hover{
+    background-color:#9662f0
+}
