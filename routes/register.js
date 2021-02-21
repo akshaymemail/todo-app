@@ -31,7 +31,11 @@ router.post('/register', (req, res) => {
         username: req.body.username,
         list : {
             listName : 'default',
-            listItems : List
+            listItems : [
+                {item : `Welcome ${req.body.fname}`},
+                {item : 'User + button to add new item'},
+                {item : 'Check the checkbox to delete an item'}
+            ]
         }
         
     }, req.body.password, (err, user) => {

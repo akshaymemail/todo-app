@@ -22,7 +22,9 @@ const schema = new mongoose.Schema({
     list : {
         listName : String,
         listItems : {
-            type : []
+            type : [
+                {item : String}
+            ]
         }
     }
 })

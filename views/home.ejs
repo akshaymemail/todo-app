@@ -9,15 +9,26 @@
     
     <div class="box">
         <%- include('partials/lists') %> 
-        <% items.map(item => { %>
-        <form action="/delete" method="post">
-            <div class="item">
-                <input name="itemId" type="checkbox" onChange="this.form.submit()">
-                <p><%= item %></p>
-            </div>
-            <input type="hidden" name="itemName" value='<%= item %>' >
-        </form>
-        <%}) %>
+        <% if (isLogin) { %>
+            <% items.map(item => { %>
+                <form action="/delete" method="post">
+                    <div class="item">
+                        <input name="itemId" value= '<%= item._id %> ' type="checkbox" onChange="this.form.submit()">
+                        <p><%= item.item %></p>
+                    </div>
+                </form>
+                <%}) %>
+        <% } else { %>
+            <% items.map(item => { %>
+                <form action="/delete" method="post">
+                    <div class="item">
+                        <input name="itemId" type="checkbox" onChange="this.form.submit()">
+                        <p><%= item%></p>
+                    </div>
+                    <input type="hidden" name="itemName" value='<%= item %>' >
+                </form>
+                <%}) %>
+            <% } %> 
         <form class="item" action="/add" method="post">
             <input type="text" name="newItem" autofocus placeholder="New Item" autocomplete="off" required>
             <button name="list" type="submit">+</button>
