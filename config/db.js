@@ -14,13 +14,19 @@ mongoose.connect(url, options).catch( error => {
 
 // creating schema
 const schema = new mongoose.Schema({
-    firstName: String,
-    lastName : String,
-    gender : String,
-    username : String,
+    firstName: {type: String, required : true},
+    lastName : {type: String, required : true},
+    gender : {type: String, required : true},
+    username : {type: String, required : true},
     password : String,
-    lists : {}
+    list : {
+        listName : String,
+        listItems : {
+            type : []
+        }
+    }
 })
+
 
 // plugins
 schema.plugin(passportLocalMongoose)

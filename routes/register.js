@@ -1,49 +1,63 @@
+//npm dependencies
 const express = require('express')
-const User = require('../config/db')
 const passport = require('passport')
-const defaultItems = require('../lib/items').default
 
+// custom dependencies
+const User = require('../config/db')
+const List = require('../lib/items')
+
+// constants
 const router = express.Router()
 
+// listning register get route
 router.get('/register', (req, res) => {
     res.render('./auth', {
-        profile:'Login',
+        profile: 'Login',
         title: 'Register',
-        heading : 'Enter you details to register',
-        isRegister : true,
-        button : 'Register',
-        isLogin : false
+        heading: 'Enter you details to register',
+        isRegister: true,
+        button: 'Register',
+        isLogin: false
     })
 })
 
 // listing post route to register user
 router.post('/register', (req, res) => {
+    // registering the user
     User.register({
-        firstName :req.body.fname,
-        lastName :req.body.lname,
-        gender :req.body.gender,
+        firstName: req.body.fname,
+        lastName: req.body.lname,
+        gender: req.body.gender,
         username: req.body.username,
-        lists: defaultItems
+        list : {
+            listName : 'default',
+            listItems : List
+        }
+        
     }, req.body.password, (err, user) => {
-        if(err) {
+        // checking the error
+        if (err) {
+            // there wa an error
             console.log(err)
             res.render('./auth', {
-                profile:'Login',
+                profile: 'Login',
                 title: 'Register',
-                heading : err.message + ' ☹',
-                isRegister : true,
-                button : 'register',
-                isLogin : false
+                heading: err.message + ' ☹',
+                isRegister: true,
+                button: 'register',
+                isLogin: false
+            })
+        } else {
+            
+            res.render('./auth', {
+                profile: 'Login',
+                title: 'Register',
+                heading: "You've successfully registered 😁",
+                isRegister: true,
+                button: 'register',
+                isLogin: false
             })
         }
-        res.render('./auth', {
-            profile:'Login',
-            title: 'Register',
-            heading : "You've successfully registered 😁",
-            isRegister : true,
-            button : 'register',
-            isLogin : false
-        })
     })
 })
 
