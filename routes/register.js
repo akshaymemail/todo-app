@@ -16,6 +16,7 @@ router.get('/register', (req, res) => {
         title: 'Register',
         heading: 'Enter you details to register',
         isRegister: true,
+        isDone:false,
         button: 'Register',
         isLogin: false
     })
@@ -45,15 +46,16 @@ router.post('/register', (req, res) => {
                 title: 'Register',
                 heading: err.message + ' ☹',
                 isRegister: true,
+                isDone:false,
                 button: 'register',
                 isLogin: false
             })
         } else {
-            
             res.render('./auth', {
                 profile: 'Login',
                 title: 'Register',
-                heading: "You've successfully registered 😁",
+                heading: "You've successfully registered! Redirecting... 😁",
+                isDone:true,
                 isRegister: true,
                 button: 'register',
                 isLogin: false

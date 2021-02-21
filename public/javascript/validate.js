@@ -1,5 +1,5 @@
 // fires up when confirmPassword fires
-$('#confirmPassword').keyup( () => {
+$('#confirmPassword, #password').keyup( () => {
     // password
     const password = $('#password')
     // confirm Password
