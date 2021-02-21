@@ -19,13 +19,10 @@ const schema = new mongoose.Schema({
     gender : {type: String, required : true},
     username : {type: String, required : true},
     password : String,
-    list : {
-        listName : String,
-        listItems : {
-            type : [
-                {item : String}
-            ]
-        }
+    listItems : {
+        type : [
+            {item : String}
+        ]
     }
 })
 

@@ -230,7 +230,7 @@ html {
   min-height: 70px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #E4E9FD;
+  border-bottom: 1px solid #E4E9FD !important;
 }
 
 

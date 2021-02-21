@@ -9,7 +9,7 @@ const Login = require('../routes/login')
 const router = express.Router()
 
 router.post('/createlist', (req, res) => {
-    console.log('form was submitted')
+    res.send('A monkey is working on this feature')
 })
 
 module.exports = router

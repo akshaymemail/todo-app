@@ -59,7 +59,7 @@ app.get('/', (req, res) => {
                 profile: user.firstName,
                 isLogin: true,
                 user: user,
-                items: user.list.listItems
+                items: user.listItems
             })
         })
         

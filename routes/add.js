@@ -6,15 +6,23 @@ const login = require('./login')
 const router = express.Router()
 
 router.post('/add', (req, res) => {
+    // is user authenticated?
     if (req.isAuthenticated()) {
+        //fetching fresh data from the database
         User.findOne({_id : login.user._id}, (err, user) => {
             if(!err) {
-                user.list.listItems.push({
+                // there is no error;
+                // add new item to the default list of current user
+                user.listItems.push({
                     item : req.body.newItem
                 })
                 user.save(err => {
                     if(!err) {
+                        // item added successfully
+                        // redirect to to the root route
                         res.redirect('/')
+                    }else{
+                        console.log(err)
                     }
                 })
             }else{
@@ -22,6 +30,7 @@ router.post('/add', (req, res) => {
             }
         })
     } else {
+        // user is not authenticated add items to the array list
         ITEMS.push(req.body.newItem)
         res.redirect('/')
     }
