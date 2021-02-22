@@ -40,8 +40,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // routes
-const login = require('./routes/login')
-app.use('/', login)
+app.use('/', require('./routes/login'))
 app.use('/', require('./routes/register'))
 app.use('/', require('./routes/logout'))
 app.use('/', require('./routes/add'))
@@ -54,13 +53,17 @@ app.get('/', (req, res) => {
     // if user is authenticated
     if (req.isAuthenticated()) {
         // user is authenticated
-        User.findOne({_id : login.user._id}, (err, user) => {
-            res.render('home', {
-                profile: user.firstName,
-                isLogin: true,
-                user: user,
-                items: user.listItems
-            })
+        User.findOne({_id : req.user.id}, (err, user) => {
+            if(!err) {
+                res.render('home', {
+                    profile: user.firstName,
+                    isLogin: true,
+                    user: user,
+                    items: user.listItems
+                })
+            }else{
+                console.log(err)
+            }
         })
         
     } else {

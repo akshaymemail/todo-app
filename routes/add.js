@@ -2,14 +2,13 @@ const express = require('express')
 
 const ITEMS = require('../lib/items')
 const User = require('../config/db')
-const login = require('./login')
 const router = express.Router()
 
 router.post('/add', (req, res) => {
     // is user authenticated?
     if (req.isAuthenticated()) {
         //fetching fresh data from the database
-        User.findOne({_id : login.user._id}, (err, user) => {
+        User.findOne({_id : req.user.id}, (err, user) => {
             if(!err) {
                 // there is no error;
                 // add new item to the default list of current user

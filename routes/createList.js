@@ -3,7 +3,6 @@ const express = require('express')
 
 // custom modules
 const User = require('../config/db')
-const Login = require('../routes/login')
 
 //constants
 const router = express.Router()

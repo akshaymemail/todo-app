@@ -6,7 +6,6 @@ const router = express.Router()
 
 //custom modules
 const ITEMS = require('../lib/items')
-const Login = require('./login')
 const User = require('../config/db')
 
 // delete post route
@@ -16,7 +15,7 @@ router.post('/delete', (req, res) => {
       // user is authenticated
       // delete item from the database for current user
       User.updateOne({
-         _id: Login.user._id
+         _id: req.user.id
       }, {
          $pull: {
             listItems: {

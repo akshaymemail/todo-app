@@ -4,7 +4,6 @@ const passport = require('passport')
 
 // custom dependencies
 const User = require('../config/db')
-const List = require('../lib/items')
 
 // constants
 const router = express.Router()

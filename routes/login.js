@@ -38,7 +38,6 @@ router.post('/login', (req, res) => {
                 // no any error check for valid user
                 if(user){
                     // user is valid
-                    module.exports.user = user
                     res.redirect('/')
                 }else{
                     // user is not valid
